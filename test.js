@@ -25,6 +25,9 @@ describe('safeDiv and safeInvert examples', () => {
     ? Maybe.Nothing()
     : Maybe.Just(n/d);
 
+  // safeInvert :: Number -> Maybe Number
+  const safeInvert = x => safeDiv(1)(x);
+
   it('returns nothing when dividing by zero', () => {
     const result = safeDiv(4)(0);
 
@@ -33,8 +36,6 @@ describe('safeDiv and safeInvert examples', () => {
 
   it('works with R.map', () => {
     const values = [1, 2, 4, 0, 5];
-    // safeInvert :: Number -> Maybe Number
-    const safeInvert = x => safeDiv(1)(x);
 
     const result = R.map(safeInvert, values);
 
