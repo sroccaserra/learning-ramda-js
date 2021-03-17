@@ -2,13 +2,6 @@ const { expect } = require('chai');
 const R = require('ramda');
 const { Maybe, Either } = require('ramda-fantasy');
 
-// - https://ramdajs.com/docs
-// - https://github.com/ramda/ramda-fantasy
-// - https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html
-// - https://mostly-adequate.gitbook.io/mostly-adequate-guide/ch08
-
-// On a besoin du deep pour les equal (les valeurs restent mutables);
-
 describe('map', () => {
   it('applies a function to an array', () => {
     const double = x => x * 2;
