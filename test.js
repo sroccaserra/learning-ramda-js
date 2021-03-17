@@ -4,14 +4,20 @@ const { Maybe, Either } = require('ramda-fantasy');
 
 describe('map', () => {
   it('applies a function to an array', () => {
+    // double :: Number -> Number
     const double = x => x * 2;
+
     const result = R.map(double, [1, 2, 3]);
+
     expect(result).to.deep.equal([2, 4, 6]);
   });
 
   it('applies a function to an object', () => {
+    // double :: Number -> Number
     const double = x => x * 2;
+
     const result = R.map(double, {x: 1, y: 2, z: 3});
+
     expect(result).to.deep.equal({x: 2, y: 4, z: 6});
   });
 });
@@ -20,8 +26,10 @@ describe('map', () => {
 
 
 describe('safeDiv and safeInvert examples', () => {
-  // safeDiv :: a -> a -> Maybe a
-  const safeDiv = n => d => d === 0 ? Maybe.Nothing() : Maybe.Just(n/d);
+  // safeDiv :: Number -> Number -> Maybe Number
+  const safeDiv = n => d => (d === 0)
+    ? Maybe.Nothing()
+    : Maybe.Just(n/d);
 
   it('returns nothing when dividing by zero', () => {
     const result = safeDiv(4)(0);
@@ -31,6 +39,7 @@ describe('safeDiv and safeInvert examples', () => {
 
   it('works with R.map', () => {
     const values = [1, 2, 4, 0, 5];
+    // safeInvert :: Number -> Maybe Number
     const safeInvert = x => safeDiv(1)(x);
 
     const result = R.map(safeInvert, values);
@@ -45,8 +54,19 @@ describe('safeDiv and safeInvert examples', () => {
   });
 
   describe('Compose functions that return either value or error', () => {
-    const deposit = x => x >= 0 ? Either.Right(x) : Either.Left("Error: negative number");
-    const invert = x => x != 0 ? Either.Right(1/x) : Either.Left("Error: division by zero");
+    // deposit :: Number -> Either String Number
+    const deposit = x => (x < 0)
+      ? Either.Left("Error: negative number")
+      : Either.Right(x);
+
+    // invert :: Number -> Either String Number
+    const invert = x => (x == 0)
+      ? Either.Left("Error: division by zero")
+      : Either.Right(1/x);
+
+    // invertDeposit :: Number -> Either String Number
+    const invertDeposit = R.composeWith(R.chain, [deposit, invert]);
+
 
     describe('deposit', () => {
       it('returns a value for positive numbers', () => {
@@ -77,8 +97,6 @@ describe('safeDiv and safeInvert examples', () => {
     });
 
     describe('compose a deposit with an inversion', () => {
-      const invertDeposit = R.composeWith(R.chain, [deposit, invert]);
-
       it('returns a value for strictly positive numbers', () => {
         const result = invertDeposit(5);
 
