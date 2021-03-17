@@ -4,6 +4,8 @@
 - Ramda suit la spec Fantasy Land
 - On peut composer des fonctions qui prennent une valeur en entrée et qui
   renvoient des Either avec `R.composeWith(R.chain)` (railway programming)
+- Le chain des Either se fait sur les Either.Right (même convention que
+  Haskell)
 - On a besoin du deep pour les equal (probablement car les valeurs restent
   mutables)
 
